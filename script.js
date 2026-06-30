@@ -4,6 +4,7 @@ class CreditBalanceManagerApp {
     constructor () {
         this.expenseForm = document.getElementById("expenseForm");
         this.modalFormSubmit = this.expenseForm.querySelector('.modal-footer button[type="submit"]');
+        this.formModal = document.getElementById("addExpenseModal");
         this.amountTxt = document.getElementById("remainingBalTxt");
         this.tableHeaders = [
             "#",
@@ -11,15 +12,8 @@ class CreditBalanceManagerApp {
             "Amount",
             "Date"
         ];
-        this.expenses = [{
-            description: "Mcdo",
-            amount: 1400,
-            date: "06/23/2026"
-        }, {
-            description: "Mang Inasal",
-            amount: 700,
-            date: "06/23/2026"
-        }];
+        this.expenses = [];
+        this.creditLimit = 3000;
 
         this.table = new Table({
             tableId: "expenseTable", 
@@ -40,18 +34,34 @@ class CreditBalanceManagerApp {
 
     handleSubmit (event) {
         const form = event.target;
-        const submitDataSet = this.modalFormSubmit.dataset;
+        const today = new Date();
 
         event.preventDefault();
+
+        // FormData relies on input "name" tags
+        // Gather form data dynamically
+        let formData = new FormData(this.expenseForm);
+
+        // Convert to a standard JS object with the key based with input's name tag
+        const data = Object.fromEntries(formData.entries());
+        data["date"] = today.toLocaleDateString();
+        this.expenses.push(data);
+        
+        this.table.loadTable();
+        this.handleBalanceRemaining();
+
+        formData = new FormData();
+        form.reset();
     }
 
     handleBalanceRemaining () {
-        let fTotalAmount = 0.0;
+        let fTotalAmount = 0;
+        
         this.expenses.forEach( expense => {
-            fTotalAmount += expense.amount;
+            fTotalAmount += Number(expense.amount);
         });
 
-        this.amountTxt.innerHTML = `₱${3000 - fTotalAmount}`;
+        this.amountTxt.innerHTML = `₱${this.creditLimit - fTotalAmount}`;
     }
 }
 
