@@ -35,7 +35,11 @@ class CreditBalanceManagerApp {
     handleSubmit (event) {
         const form = event.target;
         const today = new Date();
+        
+        // Get the modalInstance
+        const modalInstance = bootstrap.Modal.getOrCreateInstance(this.formModal);
 
+        // Prevents reloading the page
         event.preventDefault();
 
         // FormData relies on input "name" tags
@@ -52,6 +56,9 @@ class CreditBalanceManagerApp {
 
         formData = new FormData();
         form.reset();
+
+        // hide the modal
+        modalInstance.hide();
     }
 
     handleBalanceRemaining () {
