@@ -7,6 +7,7 @@ export default class Table {
      * @param {string} tableId -  to get the tbody element id.
      * @param {[string]} theaderData -  to get the Data of needed for the table [string].
      * @param {[object]} tableData -  to get the Data of needed for the table [object].
+     * @param {string} modalElementId -  to get the element ID of the modal.
      * @param {boolean} isActionButtons -  to add another row for actions button.
      * 
      * Utilities to control table
