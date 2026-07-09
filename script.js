@@ -6,6 +6,7 @@ class CreditBalanceManagerApp {
         this.modalFormSubmit = this.expenseForm.querySelector('.modal-footer button[type="submit"]');
         this.formModal = document.getElementById("addExpenseModal");
         this.amountTxt = document.getElementById("remainingBalTxt");
+        this.resetBtn = document.getElementById("resetButton");
         this.tableHeaders = [
             "#",
             "Description",
@@ -19,10 +20,21 @@ class CreditBalanceManagerApp {
             tableId: "expenseTable", 
             theaderData: this.tableHeaders,
             tableData: this.expenses,
+            modalElementId: "addExpenseModal",
             // isActionButtons: true
         });
 
-        this.expenseForm.addEventListener('submit', this.handleSubmit.bind(this));
+        // this.resetBtn.addEventListener('click', this.resetTable.bind(this));
+        // this.expenseForm.addEventListener('submit', this.handleSubmit.bind(this));
+
+        this.resetBtn.addEventListener(
+            'click',
+            () => this.resetTable()
+        );
+        this.expenseForm.addEventListener(
+            'submit',
+            (event) => this.handleSubmit(event)
+        );
 
         this._init();
     }
@@ -59,6 +71,8 @@ class CreditBalanceManagerApp {
 
         // hide the modal
         modalInstance.hide();
+
+        this.resetBtn.disabled = false;
     }
 
     handleBalanceRemaining () {
@@ -69,6 +83,14 @@ class CreditBalanceManagerApp {
         });
 
         this.amountTxt.innerHTML = `₱${this.creditLimit - fTotalAmount}`;
+    }
+
+    resetTable() {
+        this.table.resetTable();
+
+        this.resetBtn.disabled = true;
+
+        this.handleBalanceRemaining();
     }
 }
 

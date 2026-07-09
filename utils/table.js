@@ -11,11 +11,12 @@ export default class Table {
      * 
      * Utilities to control table
     */
-    constructor({tableId, theaderData = [], tableData = [], isActionButtons = false}) {
+    constructor({tableId, theaderData = [], tableData = [], modalElementId, isActionButtons = false}) {
         this.theadTag = document.querySelector(`#${tableId} thead tr`);
         this.tbodyTag = document.querySelector(`#${tableId} tbody`);
         this.theaderData = theaderData;
         this.tableData = tableData;
+        this.modalElementId = modalElementId;
         this.isActionButtons = isActionButtons;
     }
 
@@ -67,10 +68,10 @@ export default class Table {
             if (this.isActionButtons) {
                 rowHtml = rowHtml.concat(
                     `<td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addExpenseModal">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#${this.modalElementId}">
                             Update
                         </button>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#addExpenseModal">
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#${this.modalElementId}">
                             Delete
                         </button>
                     </td>`
@@ -96,5 +97,10 @@ export default class Table {
 
         this.loadTableHeader();
         this.loadTableData();
+    }
+
+    resetTable() {
+        this.tableData.length = 0;
+        this.loadTable();
     }
 }
