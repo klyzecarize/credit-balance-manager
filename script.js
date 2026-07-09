@@ -19,7 +19,7 @@ class CreditBalanceManagerApp {
             tableId: "expenseTable", 
             theaderData: this.tableHeaders,
             tableData: this.expenses,
-            colspanSize: 4
+            // isActionButtons: true
         });
 
         this.expenseForm.addEventListener('submit', this.handleSubmit.bind(this));
