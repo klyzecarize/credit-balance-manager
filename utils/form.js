@@ -5,7 +5,7 @@ export default class Form {
      * @param {object} formModal -  to get the form modal elements
      * @param {object} currentForm -  to get forms.
      * 
-     * Utilities to control table
+     * Utilities to control form
     */
     constructor ({formModal, currentForm}) {
         this.formModal = formModal;
