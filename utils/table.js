@@ -1,5 +1,3 @@
-// Table Class
-// Utilites to control table
 export default class Table {
     /**
      * Table Class

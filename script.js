@@ -1,9 +1,10 @@
 import Table from "./utils/table.js";
+import Form from "./utils/form.js";
 
 class CreditBalanceManagerApp {
     constructor () {
-        this.expenseForm = document.getElementById("expenseForm");
-        this.modalFormSubmit = this.expenseForm.querySelector('.modal-footer button[type="submit"]');
+        this.expenseFormElement = document.getElementById("expenseForm");
+        this.modalFormSubmit = this.expenseFormElement.querySelector('.modal-footer button[type="submit"]');
         this.formModal = document.getElementById("addExpenseModal");
         this.amountTxt = document.getElementById("remainingBalTxt");
         this.resetBtn = document.getElementById("resetButton");
@@ -24,6 +25,11 @@ class CreditBalanceManagerApp {
             // isActionButtons: true
         });
 
+        this.expenseForm = new Form({
+            formModal: this.formModal,
+            currentForm: this.expenseFormElement,
+        });
+
         // this.resetBtn.addEventListener('click', this.resetTable.bind(this));
         // this.expenseForm.addEventListener('submit', this.handleSubmit.bind(this));
 
@@ -31,7 +37,7 @@ class CreditBalanceManagerApp {
             'click',
             () => this.resetTable()
         );
-        this.expenseForm.addEventListener(
+        this.expenseFormElement.addEventListener(
             'submit',
             (event) => this.handleSubmit(event)
         );
@@ -45,32 +51,12 @@ class CreditBalanceManagerApp {
     }
 
     handleSubmit (event) {
-        const form = event.target;
-        const today = new Date();
-        
-        // Get the modalInstance
-        const modalInstance = bootstrap.Modal.getOrCreateInstance(this.formModal);
+        const expenseFormData = this.expenseForm.handleSubmit(event);
 
-        // Prevents reloading the page
-        event.preventDefault();
+        this.expenses.push(expenseFormData);
 
-        // FormData relies on input "name" tags
-        // Gather form data dynamically
-        let formData = new FormData(this.expenseForm);
-
-        // Convert to a standard JS object with the key based with input's name tag
-        const data = Object.fromEntries(formData.entries());
-        data["date"] = today.toLocaleDateString();
-        this.expenses.push(data);
-        
         this.table.loadTable();
         this.handleBalanceRemaining();
-
-        formData = new FormData();
-        form.reset();
-
-        // hide the modal
-        modalInstance.hide();
 
         this.resetBtn.disabled = false;
     }
