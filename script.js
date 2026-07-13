@@ -1,8 +1,12 @@
 import Table from "./utils/table.js";
 import Form from "./utils/form.js";
+import LocalStorage from "./utils/localstorage.js";
 
 class CreditBalanceManagerApp {
     constructor () {
+        // to cater the values of expenses
+        this.localStorage = new LocalStorage();
+
         this.expenseFormElement = document.getElementById("expenseForm");
         this.modalFormSubmit = this.expenseFormElement.querySelector('.modal-footer button[type="submit"]');
         this.formModal = document.getElementById("addExpenseModal");
@@ -14,7 +18,8 @@ class CreditBalanceManagerApp {
             "Amount",
             "Date"
         ];
-        this.expenses = [];
+        this.expenses = this.localStorage.loadData('expenses') ? this.localStorage.loadData('expenses') : [];
+        this.resetBtn.disabled = this.expenses != 0 && false;
         this.creditLimit = 3000;
 
         this.table = new Table({
@@ -55,6 +60,8 @@ class CreditBalanceManagerApp {
 
         this.expenses.push(expenseFormData);
 
+        this.localStorage.saveData('expenses', this.expenses);
+
         this.table.loadTable();
         this.handleBalanceRemaining();
 
@@ -78,6 +85,7 @@ class CreditBalanceManagerApp {
 
         this.handleBalanceRemaining();
     }
+
 }
 
 const credBalManagerApp = new CreditBalanceManagerApp();
