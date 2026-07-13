@@ -1,17 +1,21 @@
-// Table Class
-// Utilites to control table
 export default class Table {
-    // tableId to get the tbody element id
-    // theaderData to get the Data of needed for the table [string]
-    // tableData to get the table headers of needed for the table {[]}
-    // colspanSize for to check the table row size
-    // isActionButtons will add another row for actions button
-    constructor({tableId, theaderData = [], tableData = [], colspanSize, isActionButtons = false}) {
+    /**
+     * Table Class
+     * 
+     * @param {string} tableId -  to get the tbody element id.
+     * @param {[string]} theaderData -  to get the Data of needed for the table [string].
+     * @param {[object]} tableData -  to get the Data of needed for the table [object].
+     * @param {string} modalElementId -  to get the element ID of the modal.
+     * @param {boolean} isActionButtons -  to add another row for actions button.
+     * 
+     * Utilities to control table
+    */
+    constructor({tableId, theaderData = [], tableData = [], modalElementId, isActionButtons = false}) {
         this.theadTag = document.querySelector(`#${tableId} thead tr`);
         this.tbodyTag = document.querySelector(`#${tableId} tbody`);
         this.theaderData = theaderData;
         this.tableData = tableData;
-        this.colspanSize = colspanSize;
+        this.modalElementId = modalElementId;
         this.isActionButtons = isActionButtons;
     }
 
@@ -60,6 +64,19 @@ export default class Table {
                 rowHtml = rowHtml.concat(`<td>${dataEl}</td>`);
             }); 
 
+            if (this.isActionButtons) {
+                rowHtml = rowHtml.concat(
+                    `<td>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#${this.modalElementId}">
+                            Update
+                        </button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#${this.modalElementId}">
+                            Delete
+                        </button>
+                    </td>`
+                );
+            }
+
             this.tbodyTag.insertAdjacentHTML('beforeend', rowHtml);
 
         });
@@ -79,5 +96,10 @@ export default class Table {
 
         this.loadTableHeader();
         this.loadTableData();
+    }
+
+    resetTable() {
+        this.tableData.length = 0;
+        this.loadTable();
     }
 }

@@ -51,6 +51,9 @@
                 <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addExpenseModal">
                     Add Expense
                 </button>
+                <button type="button" id="resetButton" class="btn btn-danger w-100 my-2" disabled>
+                    Reset Expenses
+                </button>
             </div>
 
             <!-- Table Logs -->
@@ -81,12 +84,12 @@
                             </div>
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="descriptionTextInput" class="form-label">Description</label>
-                                    <input type="text" class="form-control" id="descriptionTextInput" placeholder="Jollibee">
+                                    <label for="descriptionValue" class="form-label">Description</label>
+                                    <input type="text" class="form-control" name="description" id="descriptionValue" placeholder="Jollibee">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="amountTextInput" class="form-label">Amount</label>
-                                    <input type="number" class="form-control" id="amountTextInput" placeholder="₱100">
+                                    <label for="amountValue" class="form-label">Amount</label>
+                                    <input type="number" class="form-control" name="amount" id="amountValue" placeholder="₱100">
                                 </div>
                             </div>
                             <div class="modal-footer">
