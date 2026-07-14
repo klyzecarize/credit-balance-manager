@@ -4,7 +4,7 @@ import LocalStorage from "./utils/localstorage.js";
 
 class CreditBalanceManagerApp {
     constructor () {
-        // to cater the values of expenses
+        // To cater the line by line for expenses
         this.localStorage = new LocalStorage();
 
         this.expenseFormElement = document.getElementById("expenseForm");
@@ -18,7 +18,7 @@ class CreditBalanceManagerApp {
             "Amount",
             "Date"
         ];
-        this.expenses = this.localStorage.loadData('expenses') ? this.localStorage.loadData('expenses') : [];
+        this.expenses = this.loadExpenses();
         this.resetBtn.disabled = this.expenses != 0 && false;
         this.creditLimit = 3000;
 
@@ -47,12 +47,14 @@ class CreditBalanceManagerApp {
             (event) => this.handleSubmit(event)
         );
 
+
         this._init();
     }
 
     _init () {
         this.table.loadTable();
         this.handleBalanceRemaining();
+        this.handleResetButton();
     }
 
     handleSubmit (event) {
@@ -65,7 +67,7 @@ class CreditBalanceManagerApp {
         this.table.loadTable();
         this.handleBalanceRemaining();
 
-        this.resetBtn.disabled = false;
+        this.handleResetButton();
     }
 
     handleBalanceRemaining () {
@@ -78,10 +80,20 @@ class CreditBalanceManagerApp {
         this.amountTxt.innerHTML = `₱${this.creditLimit - fTotalAmount}`;
     }
 
-    resetTable() {
+    handleResetButton () {
+        this.resetBtn.disabled = this.expenses.length === 0 ? true : false
+    }
+
+    loadExpenses () {
+        return this.localStorage.loadData('expenses') ? this.localStorage.loadData('expenses') : []
+    }
+
+    resetTable () {
         this.table.resetTable();
 
-        this.resetBtn.disabled = true;
+        this.localStorage.saveData('expenses', this.expenses);
+
+        this.handleResetButton();
 
         this.handleBalanceRemaining();
     }
